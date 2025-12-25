@@ -3,34 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>How are we feeling today?</title>
+    <title>Feeling Check-in</title>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Courier+Prime&display=swap" rel="stylesheet">
+    
     <style>
         /* --- CSS STYLING --- */
         :root {
-            --bg-color: #Fdfbf7; /* Beige nhạt */
-            --text-color: #1a3c5e; /* Xanh đậm */
-            --btn-bg: #edeae4;
-            --btn-hover: #dcd9d3;
+            /* Màu nền vàng kem */
+            --bg-color: #f2efe9; 
+            /* Màu đường kẻ lưới */
+            --grid-line: #dcd9d3; 
+            /* Màu chữ xanh đậm (Deep Blue) */
+            --text-color: #0d2b45; 
+            /* Màu nền nút */
+            --btn-bg: #fdfbf7;
+            --btn-border: #1a1a1a;
         }
 
         body, html {
             margin: 0;
             padding: 0;
-            font-family: 'Courier New', Courier, monospace; /* Font kiểu đánh máy */
-            background-color: var(--bg-color);
-            color: var(--text-color);
             height: 100%;
+            width: 100%;
+            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
+            color: var(--text-color);
+            
+            /* --- TẠO NỀN SỌC VUÔNG --- */
+            background-color: var(--bg-color);
+            background-image: 
+                linear-gradient(var(--grid-line) 1.5px, transparent 1.5px),
+                linear-gradient(90deg, var(--grid-line) 1.5px, transparent 1.5px);
+            background-size: 40px 40px; /* Kích thước ô vuông */
+            background-position: center;
         }
 
         .container {
             width: 100%;
             max-width: 600px;
             text-align: center;
-            padding: 20px;
+            z-index: 10;
         }
 
         /* Ẩn hiện các trang */
@@ -47,57 +61,80 @@
             display: flex;
         }
 
+        /* --- FONT STYLE (Giả lập Extenda 90 Exa) --- */
         h1 {
-            font-size: 2rem;
+            font-family: 'Archivo Black', sans-serif; /* Font gốc dày */
+            font-size: 2.5rem;
             margin-bottom: 40px;
-            font-weight: normal;
+            text-transform: uppercase;
+            line-height: 1.1;
+            /* Kỹ thuật kéo giãn chữ để giống bản PDF */
+            transform: scaleX(1.2); 
+            letter-spacing: -1px;
+            color: var(--text-color);
         }
 
         /* Button Styles (Viên thuốc) */
         .btn-pill {
             background-color: var(--btn-bg);
-            border: 1px solid #d1cfc9;
-            border-radius: 50px;
-            padding: 15px 30px;
-            margin: 10px 0;
-            width: 80%;
+            border: 1.5px solid var(--text-color); /* Viền đậm hơn */
+            border-radius: 999px; /* Bo tròn tối đa */
+            padding: 18px 40px;
+            margin: 12px 0;
+            width: 70%;
+            max-width: 400px;
+            
+            /* Font chữ trong nút dùng kiểu máy đánh chữ cho hợp vibe */
+            font-family: 'Courier Prime', monospace; 
             font-size: 1.1rem;
+            font-weight: bold;
             color: var(--text-color);
+            
             cursor: pointer;
-            transition: transform 0.1s ease, background-color 0.2s;
+            transition: all 0.1s ease;
             display: flex;
             align-items: center;
             justify-content: center;
+            box-shadow: 2px 2px 0px rgba(0,0,0,0.05); /* Bóng nhẹ */
         }
 
         /* Hiệu ứng Click */
         .btn-pill:active, .clicked-effect {
-            transform: scale(0.95);
-            background-color: #ccc;
+            transform: scale(0.96) translateY(2px);
+            background-color: #e0ded8;
+            box-shadow: none;
         }
 
         .btn-pill:hover {
-            background-color: var(--btn-hover);
+            background-color: #fff;
         }
 
         /* Input Styles */
         input.input-pill {
             background-color: var(--btn-bg);
-            border: 1px solid #d1cfc9;
-            border-radius: 50px;
-            padding: 15px 30px;
-            margin: 10px 0;
-            width: 80%;
+            border: 1.5px solid var(--text-color);
+            border-radius: 999px;
+            padding: 18px 30px;
+            margin: 12px 0;
+            width: 70%;
+            font-family: 'Courier Prime', monospace;
             font-size: 1.1rem;
             color: var(--text-color);
             outline: none;
             text-align: center;
         }
+        
+        input.input-pill:focus {
+            background-color: #fff;
+            border-color: #000;
+        }
 
         /* Typewriter Cursor */
         .typing::after {
-            content: '|';
+            content: '█'; /* Con trỏ vuông đậm */
+            margin-left: 5px;
             animation: blink 1s infinite;
+            opacity: 1;
         }
 
         @keyframes blink {
@@ -107,7 +144,7 @@
 
         /* Fade In Effect */
         .fade-in {
-            animation: fadeIn 2s ease-in forwards;
+            animation: fadeIn 3s ease-in forwards;
             opacity: 0;
         }
 
@@ -118,13 +155,14 @@
 
         .small-text {
             margin-top: 20px;
-            font-size: 0.9rem;
-            opacity: 0.7;
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.8rem;
+            opacity: 0.6;
         }
         
         /* Blank page style */
         #page-blank {
-            background-color: #fff;
+            background-color: var(--bg-color); /* Giữ nguyên nền grid */
         }
 
     </style>
@@ -134,7 +172,7 @@
     <audio id="typeSound" src="https://www.soundjay.com/mechanical/sounds/mechanical-clonk-1.mp3"></audio>
 
     <div id="page1" class="page active">
-        <h1>How are we feeling today?</h1>
+        <h1>How are we<br>feeling today?</h1>
         <div class="btn-pill" onclick="handleStateClick('other')">Tired but can't rest</div>
         <div class="btn-pill" onclick="handleStateClick('other')">Motivated (but fragile)</div>
         <div class="btn-pill" onclick="handleStateClick('other')">Overthinking</div>
@@ -146,12 +184,12 @@
         </div>
 
     <div id="page3" class="page" onclick="goToPage(4)">
-        <h1 id="typewriter-text-3"></h1>
-        <p class="small-text">(Click anywhere to continue)</p>
+        <h1 id="typewriter-text-3" style="font-size: 2rem;"></h1>
+        <p class="small-text">(Click anywhere)</p>
     </div>
 
     <div id="page4" class="page">
-        <h1 id="typewriter-text-4"></h1>
+        <h1 id="typewriter-text-4" style="font-size: 1.8rem;"></h1>
         <input type="text" class="input-pill user-input" placeholder="...">
         <input type="text" class="input-pill user-input" placeholder="...">
         <input type="text" class="input-pill user-input" placeholder="...">
@@ -159,37 +197,34 @@
     </div>
 
     <div id="page5" class="page">
-        <h1>Pick one thing that matters today</h1>
+        <h1>Pick one thing<br>that matters today</h1>
         <div id="selection-container" style="width: 100%; display:flex; flex-direction:column; align-items:center;">
             </div>
     </div>
 
     <div id="page6" class="page">
         <h1 id="typewriter-text-6">Today's goal</h1>
-        <div id="final-goal" class="btn-pill fade-in" style="border:none; font-weight:bold; font-size: 1.5rem; background: transparent;">
+        <div id="final-goal" class="btn-pill fade-in" style="border:none; font-size: 1.5rem; background: transparent; transform: none; font-family: 'Archivo Black', sans-serif;">
             </div>
-        <p>do one thing, not everything.</p>
+        <p class="small-text" style="font-size: 1rem;">do one thing, not everything.</p>
     </div>
 
     <script>
-        // --- CẤU HÌNH ---
-        const typeSpeed = 50; // Tốc độ gõ (ms) - Đã chỉnh nhanh hơn 0.5s để mượt hơn, bạn có thể sửa thành 500 nếu muốn chậm như yêu cầu.
+        const typeSpeed = 50; 
         const audio = document.getElementById("typeSound");
         let userThoughts = [];
         let selectedThought = "";
 
-        // --- HÀM CHUYỂN TRANG ---
         function goToPage(pageNum) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             const nextPage = document.getElementById(`page${pageNum}`);
             if(nextPage) nextPage.classList.add('active');
 
-            // Logic riêng cho từng trang khi được load
             if (pageNum === 3) {
-                startTypewriter("Too many things can feel like nothing at all.", "typewriter-text-3");
+                startTypewriter("Too many things can\nfeel like nothing at\nall.", "typewriter-text-3");
             }
             if (pageNum === 4) {
-                startTypewriter("Write down 3 things on your mind", "typewriter-text-4");
+                startTypewriter("Write down 3 things\non your mind", "typewriter-text-4");
                 setupEnterKey();
             }
             if (pageNum === 6) {
@@ -197,9 +232,7 @@
             }
         }
 
-        // --- XỬ LÝ TRANG 1 ---
         function handleStateClick(type) {
-            // Hiệu ứng click được xử lý bởi CSS :active
             setTimeout(() => {
                 if (type === 'overwhelmed') {
                     goToPage(3);
@@ -207,40 +240,47 @@
                     document.getElementById('page1').classList.remove('active');
                     document.getElementById('page-blank').classList.add('active');
                 }
-            }, 200); // Chờ 200ms để thấy hiệu ứng click
+            }, 200);
         }
 
-        // --- HIỆU ỨNG ĐÁNH MÁY ---
         function startTypewriter(text, elementId) {
             const element = document.getElementById(elementId);
-            element.innerHTML = ""; // Xóa nội dung cũ
+            element.innerHTML = ""; 
             element.classList.add("typing");
             let i = 0;
+            // Xử lý xuống dòng cho text
+            const formattedText = text.replace(/\n/g, "<br>"); 
+            
+            // Tách thẻ br để gõ đúng
+            const chars = [];
+            for (let j = 0; j < text.length; j++) {
+                if(text[j] === '\n') chars.push('<br>');
+                else chars.push(text[j]);
+            }
+
+            let charIndex = 0;
 
             function type() {
-                if (i < text.length) {
-                    element.innerHTML += text.charAt(i);
-                    i++;
+                if (charIndex < chars.length) {
+                    element.innerHTML += chars[charIndex];
+                    charIndex++;
                     
-                    // Chơi âm thanh (reset thời gian để âm thanh chồng lên nhau được nếu gõ nhanh)
-                    if(audio) {
+                    if(audio && chars[charIndex-1] !== '<br>') {
                         const soundClone = audio.cloneNode();
-                        soundClone.volume = 0.2; // Giảm âm lượng cho đỡ ồn
-                        soundClone.play().catch(e => console.log("Cần tương tác người dùng để phát âm thanh"));
+                        soundClone.volume = 0.2; 
+                        soundClone.play().catch(() => {});
                     }
 
                     setTimeout(type, typeSpeed);
                 } else {
-                    element.classList.remove("typing"); // Bỏ trỏ chuột khi xong
+                    element.classList.remove("typing");
                 }
             }
             type();
         }
 
-        // --- XỬ LÝ TRANG 4 (NHẬP LIỆU) ---
         function setupEnterKey() {
             document.addEventListener('keydown', function(event) {
-                // Chỉ kích hoạt khi đang ở trang 4 và ấn Enter
                 if (event.key === "Enter" && document.getElementById('page4').classList.contains('active')) {
                     const inputs = document.querySelectorAll('.user-input');
                     userThoughts = [];
@@ -260,10 +300,9 @@
             });
         }
 
-        // --- XỬ LÝ TRANG 5 (CHỌN Ý) ---
         function renderPage5() {
             const container = document.getElementById('selection-container');
-            container.innerHTML = ""; // Xóa cũ
+            container.innerHTML = "";
             
             userThoughts.forEach(thought => {
                 const btn = document.createElement('div');
@@ -271,7 +310,6 @@
                 btn.textContent = thought;
                 btn.onclick = function() {
                     selectedThought = thought;
-                    // Hiệu ứng click visual
                     btn.style.transform = "scale(0.95)";
                     setTimeout(() => {
                         goToPage(6);
@@ -280,7 +318,6 @@
                 container.appendChild(btn);
             });
         }
-
     </script>
 </body>
 </html>
