@@ -7,17 +7,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Courier+Prime&display=swap" rel="stylesheet">
     
     <style>
-        /* --- CSS STYLING --- */
+        /* --- CSS CHUNG --- */
         :root {
-            /* Màu nền vàng kem */
             --bg-color: #f2efe9; 
-            /* Màu đường kẻ lưới */
             --grid-line: #dcd9d3; 
-            /* Màu chữ xanh đậm (Deep Blue) */
             --text-color: #0d2b45; 
-            /* Màu nền nút */
             --btn-bg: #fdfbf7;
-            --btn-border: #1a1a1a;
         }
 
         body, html {
@@ -26,143 +21,152 @@
             height: 100%;
             width: 100%;
             overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            font-family: 'Courier Prime', monospace;
             color: var(--text-color);
             
-            /* --- TẠO NỀN SỌC VUÔNG --- */
+            /* Nền sọc vuông */
             background-color: var(--bg-color);
             background-image: 
                 linear-gradient(var(--grid-line) 1.5px, transparent 1.5px),
                 linear-gradient(90deg, var(--grid-line) 1.5px, transparent 1.5px);
-            background-size: 40px 40px; /* Kích thước ô vuông */
+            background-size: 40px 40px;
             background-position: center;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
+        /* Khung chứa nội dung chính căn giữa */
         .container {
             width: 100%;
-            max-width: 600px;
-            text-align: center;
-            z-index: 10;
+            max-width: 800px; /* Mở rộng khung để nút không bị chật */
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
         }
 
-        /* Ẩn hiện các trang */
         .page {
             display: none;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
             width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
         }
 
         .active {
             display: flex;
         }
 
-        /* --- FONT STYLE (Giả lập Extenda 90 Exa) --- */
+        /* --- TYPOGRAPHY --- */
         h1 {
-            font-family: 'Archivo Black', sans-serif; /* Font gốc dày */
-            font-size: 2.5rem;
-            margin-bottom: 40px;
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 3rem; /* To hơn chút */
             text-transform: uppercase;
             line-height: 1.1;
-            /* Kỹ thuật kéo giãn chữ để giống bản PDF */
-            transform: scaleX(1.2); 
+            transform: scaleX(1.1); 
             letter-spacing: -1px;
-            color: var(--text-color);
+            color: #2c2c54; /* Màu đậm như ảnh */
+            text-align: center;
+            margin-bottom: 20px;
         }
 
-        /* Button Styles (Viên thuốc) */
+        /* --- BUTTON STYLES --- */
         .btn-pill {
             background-color: var(--btn-bg);
-            border: 1.5px solid var(--text-color); /* Viền đậm hơn */
-            border-radius: 999px; /* Bo tròn tối đa */
-            padding: 18px 40px;
-            margin: 12px 0;
+            border: 1.5px solid #000;
+            border-radius: 999px;
+            padding: 12px 30px;
+            font-family: 'Archivo Black', sans-serif; /* Font đậm cho nút trang 1 */
+            font-size: 1rem;
+            color: #000;
+            cursor: pointer;
+            transition: transform 0.1s;
+            text-align: center;
+            white-space: nowrap;
+            box-shadow: 2px 2px 0 rgba(0,0,0,0.1);
+            user-select: none;
+        }
+        
+        /* Font thường cho các nút lựa chọn ở trang sau */
+        .btn-option {
+            font-family: 'Courier Prime', monospace;
+            font-weight: bold;
             width: 70%;
             max-width: 400px;
-            
-            /* Font chữ trong nút dùng kiểu máy đánh chữ cho hợp vibe */
-            font-family: 'Courier Prime', monospace; 
-            font-size: 1.1rem;
-            font-weight: bold;
-            color: var(--text-color);
-            
-            cursor: pointer;
-            transition: all 0.1s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 2px 2px 0px rgba(0,0,0,0.05); /* Bóng nhẹ */
+            margin: 10px 0;
         }
 
-        /* Hiệu ứng Click */
-        .btn-pill:active, .clicked-effect {
-            transform: scale(0.96) translateY(2px);
-            background-color: #e0ded8;
-            box-shadow: none;
+        .btn-pill:active {
+            transform: scale(0.95);
         }
 
-        .btn-pill:hover {
-            background-color: #fff;
+        /* --- LAYOUT TRANG 1 (Theo ảnh) --- */
+        /* Vùng chứa các nút để định vị tuyệt đối */
+        .buttons-layout {
+            position: relative;
+            width: 700px;
+            height: 300px;
+            margin-top: 20px;
         }
 
-        /* Input Styles */
+        .btn-pos {
+            position: absolute;
+        }
+
+        /* Vị trí các nút (Tinh chỉnh theo ảnh) */
+        #btn-motivated { top: 0; left: 50%; transform: translateX(-50%); }
+        #btn-tired { top: 70px; left: 10%; }
+        #btn-overthinking { top: 70px; right: 10%; }
+        #btn-numb { bottom: 30px; left: 25%; }
+        #btn-overwhelmed { bottom: 30px; right: 25%; }
+
+
+        /* --- INPUT & KHÁC --- */
         input.input-pill {
             background-color: var(--btn-bg);
-            border: 1.5px solid var(--text-color);
+            border: 1.5px solid #000;
             border-radius: 999px;
-            padding: 18px 30px;
-            margin: 12px 0;
-            width: 70%;
+            padding: 15px 30px;
+            margin: 10px 0;
+            width: 60%;
             font-family: 'Courier Prime', monospace;
             font-size: 1.1rem;
-            color: var(--text-color);
             outline: none;
             text-align: center;
         }
-        
-        input.input-pill:focus {
-            background-color: #fff;
-            border-color: #000;
-        }
 
-        /* Typewriter Cursor */
         .typing::after {
-            content: '█'; /* Con trỏ vuông đậm */
+            content: '█';
             margin-left: 5px;
             animation: blink 1s infinite;
-            opacity: 1;
         }
 
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
+        @keyframes blink { 50% { opacity: 0; } }
 
-        /* Fade In Effect */
         .fade-in {
-            animation: fadeIn 3s ease-in forwards;
+            animation: fadeIn 2s ease-in forwards;
             opacity: 0;
         }
+        @keyframes fadeIn { to { opacity: 1; } }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
+        .small-text { font-size: 0.8rem; opacity: 0.6; margin-top: 20px; }
 
-        .small-text {
-            margin-top: 20px;
-            font-family: 'Courier Prime', monospace;
-            font-size: 0.8rem;
-            opacity: 0.6;
-        }
-        
-        /* Blank page style */
-        #page-blank {
-            background-color: var(--bg-color); /* Giữ nguyên nền grid */
+        /* SoundCloud Iframe ẩn */
+        #bg-music-frame {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            opacity: 0;
+            pointer-events: none;
+            bottom: 0;
+            right: 0;
         }
 
     </style>
@@ -171,55 +175,76 @@
 
     <audio id="typeSound" src="https://www.soundjay.com/mechanical/sounds/mechanical-clonk-1.mp3"></audio>
 
-    <div id="page1" class="page active">
-        <h1>How are we<br>feeling today?</h1>
-        <div class="btn-pill" onclick="handleStateClick('other')">Tired but can't rest</div>
-        <div class="btn-pill" onclick="handleStateClick('other')">Motivated (but fragile)</div>
-        <div class="btn-pill" onclick="handleStateClick('other')">Overthinking</div>
-        <div class="btn-pill" onclick="handleStateClick('other')">Feeling numb</div>
-        <div class="btn-pill" onclick="handleStateClick('overwhelmed')">Overwhelmed</div>
-    </div>
+    <iframe id="bg-music-frame" allow="autoplay" scrolling="no" frameborder="no" 
+        src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/ghostly/c418-subwoofer-lullaby&color=%23ff5500&auto_play=true&hide_related=false&show_comments=false&show_user=false&show_reposts=false&show_teaser=false&visual=false">
+    </iframe>
 
-    <div id="page-blank" class="page">
+    <div class="container">
+        
+        <div id="page1" class="page active">
+            <h1>How are we feeling today?</h1>
+            
+            <div class="buttons-layout">
+                <div id="btn-motivated" class="btn-pill btn-pos" onclick="handleStateClick('other')">Motivated (but fragile)</div>
+                <div id="btn-tired" class="btn-pill btn-pos" onclick="handleStateClick('other')">Tired but can't rest</div>
+                <div id="btn-overthinking" class="btn-pill btn-pos" onclick="handleStateClick('other')">Overthinking</div>
+                <div id="btn-numb" class="btn-pill btn-pos" onclick="handleStateClick('other')">Feeling numb</div>
+                <div id="btn-overwhelmed" class="btn-pill btn-pos" onclick="handleStateClick('overwhelmed')">Overwhelmed</div>
+            </div>
         </div>
 
-    <div id="page3" class="page" onclick="goToPage(4)">
-        <h1 id="typewriter-text-3" style="font-size: 2rem;"></h1>
-        <p class="small-text">(Click anywhere)</p>
-    </div>
+        <div id="page-blank" class="page"></div>
 
-    <div id="page4" class="page">
-        <h1 id="typewriter-text-4" style="font-size: 1.8rem;"></h1>
-        <input type="text" class="input-pill user-input" placeholder="...">
-        <input type="text" class="input-pill user-input" placeholder="...">
-        <input type="text" class="input-pill user-input" placeholder="...">
-        <p class="small-text">Press <strong>Enter</strong> when done</p>
-    </div>
+        <div id="page3" class="page" onclick="goToPage(4)">
+            <h1 id="typewriter-text-3" style="font-size: 2.2rem; white-space: pre-line;"></h1>
+            <p class="small-text">(Click anywhere)</p>
+        </div>
 
-    <div id="page5" class="page">
-        <h1>Pick one thing<br>that matters today</h1>
-        <div id="selection-container" style="width: 100%; display:flex; flex-direction:column; align-items:center;">
-            </div>
-    </div>
+        <div id="page4" class="page">
+            <h1 id="typewriter-text-4" style="font-size: 2rem; white-space: pre-line;"></h1>
+            <input type="text" class="input-pill user-input" placeholder="...">
+            <input type="text" class="input-pill user-input" placeholder="...">
+            <input type="text" class="input-pill user-input" placeholder="...">
+            <p class="small-text">Press <strong>Enter</strong> when done</p>
+        </div>
 
-    <div id="page6" class="page">
-        <h1 id="typewriter-text-6">Today's goal</h1>
-        <div id="final-goal" class="btn-pill fade-in" style="border:none; font-size: 1.5rem; background: transparent; transform: none; font-family: 'Archivo Black', sans-serif;">
-            </div>
-        <p class="small-text" style="font-size: 1rem;">do one thing, not everything.</p>
+        <div id="page5" class="page">
+            <h1 id="typewriter-text-5" style="font-size: 2.2rem; white-space: pre-line;"></h1>
+            <div id="selection-container" style="width: 100%; display:flex; flex-direction:column; align-items:center; margin-top:20px;">
+                </div>
+        </div>
+
+        <div id="page6" class="page">
+            <h1 id="typewriter-text-6"></h1>
+            <div id="final-goal" class="btn-pill fade-in" style="border:none; font-size: 1.8rem; background: transparent; transform: none; box-shadow:none;"></div>
+            <p class="small-text">do one thing, not everything.</p>
+        </div>
+
     </div>
 
     <script>
         const typeSpeed = 50; 
-        const audio = document.getElementById("typeSound");
+        const typeSound = document.getElementById("typeSound");
         let userThoughts = [];
         let selectedThought = "";
+
+        // Hàm phát nhạc nền (được gọi khi user tương tác lần đầu)
+        function tryPlayMusic() {
+            // SoundCloud iframe autoplay đôi khi bị chặn, 
+            // reload lại src khi user click để kích hoạt autoplay
+            const iframe = document.getElementById('bg-music-frame');
+            if(!iframe.classList.contains('playing')) {
+                iframe.src = iframe.src; 
+                iframe.classList.add('playing');
+            }
+        }
 
         function goToPage(pageNum) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             const nextPage = document.getElementById(`page${pageNum}`);
             if(nextPage) nextPage.classList.add('active');
 
+            // Logic từng trang
             if (pageNum === 3) {
                 startTypewriter("Too many things can\nfeel like nothing at\nall.", "typewriter-text-3");
             }
@@ -227,12 +252,22 @@
                 startTypewriter("Write down 3 things\non your mind", "typewriter-text-4");
                 setupEnterKey();
             }
+            if (pageNum === 5) {
+                // Thêm hiệu ứng gõ cho trang 5
+                startTypewriter("Pick one thing that\nmatters today", "typewriter-text-5");
+            }
             if (pageNum === 6) {
-                document.getElementById('final-goal').textContent = selectedThought;
+                // Thêm hiệu ứng gõ cho tiêu đề trang 6
+                startTypewriter("Today's goal", "typewriter-text-6", () => {
+                    // Callback: Sau khi gõ xong tiêu đề thì mới hiện nội dung
+                    document.getElementById('final-goal').textContent = selectedThought;
+                    document.getElementById('final-goal').classList.add('fade-in');
+                });
             }
         }
 
         function handleStateClick(type) {
+            tryPlayMusic(); // Kích hoạt nhạc
             setTimeout(() => {
                 if (type === 'overwhelmed') {
                     goToPage(3);
@@ -243,15 +278,12 @@
             }, 200);
         }
 
-        function startTypewriter(text, elementId) {
+        function startTypewriter(text, elementId, callback) {
             const element = document.getElementById(elementId);
             element.innerHTML = ""; 
             element.classList.add("typing");
-            let i = 0;
-            // Xử lý xuống dòng cho text
-            const formattedText = text.replace(/\n/g, "<br>"); 
             
-            // Tách thẻ br để gõ đúng
+            // Xử lý xuống dòng
             const chars = [];
             for (let j = 0; j < text.length; j++) {
                 if(text[j] === '\n') chars.push('<br>');
@@ -259,21 +291,20 @@
             }
 
             let charIndex = 0;
-
             function type() {
                 if (charIndex < chars.length) {
                     element.innerHTML += chars[charIndex];
                     charIndex++;
                     
-                    if(audio && chars[charIndex-1] !== '<br>') {
-                        const soundClone = audio.cloneNode();
+                    if(typeSound && chars[charIndex-1] !== '<br>') {
+                        const soundClone = typeSound.cloneNode();
                         soundClone.volume = 0.2; 
                         soundClone.play().catch(() => {});
                     }
-
                     setTimeout(type, typeSpeed);
                 } else {
                     element.classList.remove("typing");
+                    if (callback) callback(); // Gọi hàm callback nếu có (dùng cho trang 6)
                 }
             }
             type();
@@ -306,7 +337,7 @@
             
             userThoughts.forEach(thought => {
                 const btn = document.createElement('div');
-                btn.className = 'btn-pill';
+                btn.className = 'btn-pill btn-option'; // Class riêng cho nút option
                 btn.textContent = thought;
                 btn.onclick = function() {
                     selectedThought = thought;
